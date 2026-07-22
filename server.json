@@ -1,0 +1,18 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server.json",
+  "name": "honest-vies-mcp",
+  "description": "Local MCP server for EU VIES VAT number validation — official EU-wide check used before issuing 0% VAT cross-border invoices. No key, no rate limit, data flows only between your machine and the European Commission.",
+  "repository": {
+    "url": "https://github.com/bartosz-kuc/honest-vies-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registry_name": "pypi",
+      "name": "honest-vies-mcp",
+      "version": "0.1.0",
+      "runtime_hint": "uvx"
+    }
+  ]
+}
