@@ -98,6 +98,12 @@ Non-obvious bits VIES will bite you with:
 
 - GitHub: https://github.com/bartosz-kuc
 
+- Email: firma@bartosza.pl
+
+## Consulting
+
+Available for consulting on Polish tax and business integrations (KSeF, GUS/NFZ/GIOŚ APIs, mBank data), MCP server design, and AI-assisted tooling for JDGs and small teams. Reach out via email.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
