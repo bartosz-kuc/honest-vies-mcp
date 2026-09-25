@@ -6,11 +6,12 @@ for cross-border EU VAT number validation. No authentication, no
 registration, no rate limit. Data flows only between your machine and the
 Commission's servers.
 
-Primary use case: a Polish JDG issuing a 0% VAT (reverse-charge) invoice to
-an EU B2B counterparty must verify the counterparty's VAT number in VIES
-BEFORE issuing the invoice — and keep evidence of the check. Passing a
-`requester_country` + `requester_vat` returns a consultation number
-(`requestIdentifier`) that serves as legally accepted proof of the check.
+Primary use case: an EU business (e.g. a Polish JDG) issuing a 0% VAT
+(reverse-charge) invoice to an EU B2B counterparty must verify the
+counterparty's VAT number in VIES BEFORE issuing the invoice — and keep
+evidence of the check. Passing a `requester_country` + `requester_vat`
+returns a consultation number (`requestIdentifier`) that serves as legally
+accepted proof of the check.
 
 Tools: check_vat, list_supported_countries.
 
@@ -101,7 +102,11 @@ def _check_vat(country: str, number: str, requester_country: str | None, request
     # Annotate the response with a plain-language interpretation.
     interpretation = "VALID — this VAT number is registered in VIES; you can issue a 0% VAT (reverse-charge) invoice."
     if not data.get("valid"):
-        interpretation = "INVALID — VIES has no record of this VAT number. Do NOT issue a 0% VAT invoice; charge Polish VAT (23%) instead until the counterparty proves valid EU VAT status."
+        interpretation = (
+            "INVALID — VIES has no record of this VAT number. Do NOT issue a 0% VAT (reverse-charge) invoice; "
+            "charge VAT at your own country's domestic rate until the counterparty proves valid EU VAT status. "
+            "For Polish sellers: charge Polish VAT (standard rate 23%)."
+        )
 
     result: dict[str, Any] = {
         "interpretation": interpretation,
@@ -128,8 +133,8 @@ async def _list_tools() -> list[Tool]:
                 "Check an EU VAT number against the VIES database (the EU-wide cross-border VAT validator). "
                 "Returns valid/invalid + registered name and address if the national database returns them. "
                 "Accepts either (country_code, vat_number) separately or a combined `vat` like 'PL5252344078'. "
-                "For Polish JDG issuing 0% VAT invoices to EU B2B customers: ALSO pass requester_country + requester_vat "
-                "with your own PL VAT — VIES will return a consultation_number that serves as legal proof of the check. "
+                "For EU sellers (e.g. a Polish JDG) issuing 0% VAT invoices to EU B2B customers: ALSO pass requester_country + requester_vat "
+                "with your own VAT number — VIES will return a consultation_number that serves as legal proof of the check. "
                 "Keep this number for your records. VIES will not issue a consultation number if EITHER VAT is invalid."
             ),
             inputSchema={

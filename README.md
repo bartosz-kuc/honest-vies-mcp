@@ -6,7 +6,7 @@ Part of the [honest-mcp family](https://github.com/bartosz-kuc?tab=repositories)
 
 ## Why
 
-A Polish JDG (or any EU business) issuing a **0% VAT reverse-charge invoice** to an EU B2B customer must first verify that customer's VAT number is registered in VIES — and keep evidence of the check. Skipping this and it turns out the customer's VAT is invalid, the Polish tax office will demand 23% VAT from **you**, retroactively, plus interest.
+A Polish JDG (or any EU business) issuing a **0% VAT reverse-charge invoice** to an EU B2B customer must first verify that customer's VAT number is registered in VIES — and keep evidence of the check. Skipping this and it turns out the customer's VAT is invalid, your tax office will demand domestic VAT from **you** (23% in Poland), retroactively, plus interest.
 
 This server puts VIES a single tool call away. Ask your AI "verify DE143454214 before I issue this invoice" and you get: valid/invalid, registered name and address, and a consultation number for your records if you provided your own VAT.
 
@@ -38,6 +38,8 @@ cd honest-vies-mcp
 python3 -m venv venv
 ./venv/bin/pip install -r requirements.txt
 ```
+
+On Windows, create the venv with `python -m venv venv` and use `venv\Scripts\pip` and `venv\Scripts\python.exe` instead of the `venv/bin/...` paths shown here and below.
 
 Register with Claude Code:
 
@@ -113,6 +115,5 @@ MIT — see [LICENSE](LICENSE).
 - [honest-gmail-mcp](https://github.com/bartosz-kuc/honest-gmail-mcp) — local Gmail MCP
 - [honest-calendar-mcp](https://github.com/bartosz-kuc/honest-calendar-mcp) — local Google Calendar MCP
 - [honest-drive-mcp](https://github.com/bartosz-kuc/honest-drive-mcp) — local Google Drive MCP with permission management
-- [ksef-mcp](https://github.com/bartosz-kuc/ksef-mcp) — Polish KSeF (e-invoicing) MCP
-- [nip-krs-mcp](https://github.com/bartosz-kuc/nip-krs-mcp) — Polish company registry MCP (biała lista + KRS)
-- [nbp-mcp](https://github.com/bartosz-kuc/nbp-mcp) — NBP MCP: exchange rates + gold fixing for Polish accounting
+- [honest-nip-krs-mcp](https://github.com/bartosz-kuc/honest-nip-krs-mcp) — Polish company registry MCP (biała lista + KRS)
+- [honest-nbp-mcp](https://github.com/bartosz-kuc/honest-nbp-mcp) — NBP MCP: exchange rates + gold fixing for Polish accounting
