@@ -99,6 +99,23 @@ def _check_vat(country: str, number: str, requester_country: str | None, request
     resp.raise_for_status()
     data = resp.json()
 
+    # VIES reports some failures as HTTP 200 with actionSucceed=false and errorWrappers
+    # (e.g. MS_UNAVAILABLE when a national registry is down) and no boolean `valid`.
+    # That is "could not check", not "invalid" — never report it as INVALID.
+    if data.get("actionSucceed") is False or data.get("errorWrappers") or not isinstance(data.get("valid"), bool):
+        codes = [w.get("error") for w in (data.get("errorWrappers") or []) if isinstance(w, dict) and w.get("error")]
+        return {
+            "error": "VIES could not check this number" + (f": {', '.join(codes)}" if codes else ""),
+            "interpretation": (
+                "UNKNOWN — VIES returned no result, so this is NOT a finding that the VAT number is invalid. "
+                "INVALID_INPUT usually means a wrong country code or number format; MS_UNAVAILABLE, "
+                "MS_MAX_CONCURRENT_REQ, SERVICE_UNAVAILABLE or TIMEOUT mean the national registry or VIES is "
+                "temporarily unavailable — retry in a few minutes."
+            ),
+            "vies_errors": codes,
+            "vies_response": data,
+        }
+
     # Annotate the response with a plain-language interpretation.
     interpretation = "VALID — this VAT number is registered in VIES; you can issue a 0% VAT (reverse-charge) invoice."
     if not data.get("valid"):
